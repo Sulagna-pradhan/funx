@@ -1,8 +1,10 @@
 const express = require("express");
-const { PORT, BASE_URL, REQUEST_SIZE } = require("./variables");
-const path = require("path");
 const layout = require("express-ejs-layouts");
-// const { prismaClient } = require("./database/client");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const path = require("path");
+const { PORT, BASE_URL, REQUEST_SIZE, SESSION_SECRET } = require("./variables");
+const { initializeStore } = require("./database/sessionStore");
 
 const app = express();
 
@@ -14,6 +16,20 @@ app.use("/public", express.static(path.resolve(__dirname, "..", "public")));
 app.use(express.json({ limit: REQUEST_SIZE }));
 app.use(express.urlencoded({ extended: false, limit: REQUEST_SIZE }));
 app.use(layout);
+app.use(cookieParser());
+app.use(
+  session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      path: "/",
+      httpOnly: true,
+      sameSite: true,
+    },
+    store: initializeStore(session),
+  })
+);
 
 app.get("/", (req, res) => {
   res.render("test", {
