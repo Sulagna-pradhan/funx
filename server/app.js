@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const { PORT, BASE_URL, REQUEST_SIZE } = require("./variables");
 const { sessionConfig } = require("./session/config");
+const { initializeCsrf } = require("./middlewares/csrf");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: false, limit: REQUEST_SIZE }));
 app.use(layout);
 app.use(cookieParser());
 app.use(session(sessionConfig(session)));
+app.use(initializeCsrf);
 
 app.get("/", (req, res) => {
   res.render("test", {

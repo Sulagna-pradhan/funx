@@ -11,17 +11,17 @@ module.exports.sessionConfig = (session) => {
   });
 
   return {
-    // genid: () => {
-    //   return crypto.randomBytes(32).toString("hex");
-    // },
-    name: "X-SID",
+    genid: () => {
+      return crypto.randomUUID();
+    },
+    name: "X_SID",
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
       path: "/",
       httpOnly: true,
-      sameSite: true,
+      sameSite: "lax",
     },
     store: pgStore,
   };
