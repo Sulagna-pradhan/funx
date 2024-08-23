@@ -18,3 +18,11 @@ model Admin {
 
   @@map("admins")
 }
+
+model Session {
+  sid String @id @default(cuid())
+  sess Json
+  expire DateTime
+
+  @@map("sessions")
+}

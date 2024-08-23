@@ -1,0 +1,11 @@
+node_modules
+
+package.json
+package-*.json
+*.lock
+
+.env
+.env.*
+
+*.sql
+*.toml
